@@ -43,7 +43,7 @@ public class Employee_Payroll_Main {
 				}
 				break;
 			case 5:
-				employeePayRollService.particularDataRange(preparedStatement);
+				employeePayRollService.employeesData();
 				break;
 			case Num:
 				exit=Num;

@@ -67,22 +67,35 @@ public class Employee_Payroll_Service {
 		return resultSet;
 	}
 	
-	public Statement particularDataRange(PreparedStatement preparedStatement) throws SQLException{
-		
-		String jdbcURL = "jdbc:mysql://localhost:3306/bridgelabzDemo?useSSL=false";
-		String userName = "root";
-		String password = "Santhu@123";
-		System.out.println("connecting to database : " + jdbcURL);
+	public void employeesData() {
+
 		try {
-			connection = DriverManager.getConnection(jdbcURL, userName, password);
-			System.out.println("Connection is successfull " + connection);
-			String Query=("Select * from employee_payroll where StartDate between Cast('2019-02-03' as date) and date(now())");
-			preparedStatement = connection.prepareStatement(Query);
+			preparedStatement = connection.prepareStatement("select EmpName from employee_payroll where startdate between "
+					+ "cast('2019-02-03' as date) and date(now());");
+			resultSet = preparedStatement.executeQuery();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return preparedStatement;
+		try {
+			System.out.println("EmpName");
+			while (resultSet.next()) {
+				System.out.println(resultSet.getString(1));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
+	
+	public void close() {
+		try {
+			preparedStatement.close();
+			connection.close();
+			System.out.println("connection closed");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 
 	public void printRetrivedData(ResultSet resultSet) throws PatternMatchException {
 		try {
@@ -109,5 +122,6 @@ public class Employee_Payroll_Service {
 			throw new PatternMatchException("Pattern is Mismatched -The database should be checked ");
 		}
 		System.out.println(list);
+		
 	}
 }
